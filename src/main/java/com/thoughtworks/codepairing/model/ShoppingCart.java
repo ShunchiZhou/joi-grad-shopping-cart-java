@@ -1,6 +1,6 @@
 package com.thoughtworks.codepairing.model;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ShoppingCart {
@@ -20,6 +20,7 @@ public class ShoppingCart {
         double totalPrice = 0;
 
         int loyaltyPointsEarned = 0;
+        Map<String,prodcut> map=new HashSet<>();
         for (Product product : products) {
             double discount = 0;
             if (product.getProductCode().startsWith("DIS_10")) {
@@ -28,10 +29,22 @@ public class ShoppingCart {
             } else if (product.getProductCode().startsWith("DIS_15")) {
                 discount = (product.getPrice() * 0.15);
                 loyaltyPointsEarned += (product.getPrice() / 15);
-            } else {
+            } else if(product.getProductCode().startsWith("DIS_20")){
+            	discount = (product.getPrice() * 0.2);
+                loyaltyPointsEarned += (product.getPrice() / 20);
+            }else if(product.getProductCode().startsWith("BULK_BUY_2_GET_1")){
+            	if(products.size()==2) {
+            		discount = product.getPrice()*0.33;
+            	}
+            }else if(products.size()>=2) {        	
+            	map.put(product.getProductCode(),product);
+            }
+            else {
                 loyaltyPointsEarned += (product.getPrice() / 5);
             }
-
+            for(Map.Entry<> a:map) {
+            	
+            }
             totalPrice += product.getPrice() - discount;
         }
 
